@@ -1,0 +1,111 @@
+[
+    {
+        "message": "changed array of objects",
+        "first": {	
+			"array":[{"key1":"val"}]
+		},
+        "second": {	
+			"array":[{"key1":"val2"}]
+		},
+        "patch": [
+            { "op": "replace", "path": "/array", "value": [{"key1":"val2"}] }
+        ],
+        "composite_objects":[
+        	"/array"
+        ]
+    },
+    {
+        "message": "same number in int and double representation works",
+        "first": {"val": 1},
+        "second": {"val": 1.0},
+        "patch": [],
+        "composite_objects":[
+        	
+        ]
+    },
+    {
+		"message": "single object member is added (#2)",
+		"second": {
+	      "setting": {
+	        "employee": {
+	          "general": {
+	            "rate": 1.0
+	          },
+	          "total": {
+	            "rate": 1.0
+	          }
+	        },
+	        "employer": {
+	          "general": {
+	            "rate": 2.0
+	          },
+	          "total": {
+	            "rate": 2.0
+	          }
+	        }
+	      }
+    },
+        "first": {
+	      "setting": {
+	        "employee": {
+	          "general": {
+	            "rate": 1.0
+	          },
+	          "total": {
+	            "rate": 1.0
+	          }
+	        }
+	      }
+    },
+        "patch": [
+            { "op": "add", "path": "/setting/employer" ,"value":{"general":{"rate":2.0},"total":{"rate":2.0}}}
+        ],
+        "composite_objects":[
+        	"/setting/employer",
+        	"/setting/employee"
+        ]
+    },
+    {
+        "message": "single object member is deleted (#2)",
+        "first": {
+      "setting": {
+        "employee": {
+          "general": {
+            "rate": 1.0
+          },
+          "total": {
+            "rate": 1.0
+          }
+        },
+        "employer": {
+          "general": {
+            "rate": 1.0
+          },
+          "total": {
+            "rate": 1.0
+          }
+        }
+      }
+    },
+        "second": {
+      "setting": {
+        "employee": {
+          "general": {
+            "rate": 1.0
+          },
+          "total": {
+            "rate": 1.0
+          }
+        }
+      }
+    },
+        "patch": [
+            { "op": "remove", "path": "/setting/employer" }
+        ],
+        "composite_objects":[
+        	"/setting/employer",
+        	"/setting/employee"
+        ]
+    }
+    
+]

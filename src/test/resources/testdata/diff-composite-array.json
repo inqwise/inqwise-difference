@@ -1,0 +1,50 @@
+[
+    {
+        "message": "changed array of objects",
+        "first": {	
+			"array":[{"key1":"val"}]
+		},
+        "second": {	
+			"array":[{"key1":"val2"}]
+		},
+        "patch": [
+            { "op": "replace", "path": "/array", "value": [{"key1":"val2"}] }
+        ]
+    },
+    {
+        "message": "changed array of numbers",
+        "first": {	
+			"array":[1,2,3,4]
+		},
+        "second": {	
+			"array":[1,2]
+		},
+        "patch": [
+            { "op": "replace", "path": "/array", "value": [1,2] }
+        ]
+    },
+    {
+        "message": "changed array of numbers reverse",
+        "first": {	
+			"array":[1,2]
+		},
+        "second": {	
+			"array":[1,2,3,4]
+		},
+        "patch": [
+            { "op": "replace", "path": "/array", "value": [1,2,3,4] }
+        ]
+    },
+    {
+        "message": "remove array",
+        "first": {
+        	"array":[1,2]	
+		},
+        "second": {	
+			
+		},
+        "patch": [
+            { "op": "remove", "path": "/array", "value": [1,2] }
+        ]
+    }
+]
