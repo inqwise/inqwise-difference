@@ -29,7 +29,7 @@ mvn clean compile -DskipTests
 
 # Run Snyk test on Maven dependencies
 echo "🔍 Scanning Maven dependencies for vulnerabilities..."
-snyk test --severity-threshold=medium --project-name=inqwise-difference
+snyk test --severity-threshold=medium --project-name=inqwise-difference --sarif-file-output=snyk-local.sarif
 
 # Run Snyk monitor (optional - only for tracking)
 read -p "📊 Do you want to monitor this project on Snyk? (y/N): " -n 1 -r
@@ -41,3 +41,4 @@ fi
 
 echo "✅ Local Snyk security checks completed!"
 echo "💡 Tip: Run 'snyk test --help' for more options"
+echo "📊 SARIF report generated: snyk-local.sarif"
