@@ -107,10 +107,15 @@ jobs:
     - name: Run Snyk security scan
       uses: snyk/actions/maven@master
       continue-on-error: true
+      if: ${{ secrets.SNYK_TOKEN != '' }}
       env:
         SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
       with:
         args: --severity-threshold=medium
+        
+    - name: Snyk not configured notice
+      if: ${{ secrets.SNYK_TOKEN == '' }}
+      run: echo "ℹ️ Skipping Snyk scan - SNYK_TOKEN not configured"
 
   integration-test:
     name: Integration Tests
