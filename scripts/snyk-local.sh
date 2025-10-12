@@ -1,0 +1,43 @@
+#!/bin/bash
+
+# Local Snyk Security Testing Script
+# This script runs the same Snyk checks locally as in CI/CD
+
+set -e
+
+echo "🔍 Running local Snyk security checks..."
+
+# Check if Snyk CLI is installed
+if ! command -v snyk &> /dev/null; then
+    echo "❌ Snyk CLI not found. Install it with:"
+    echo "   npm install -g snyk"
+    echo "   or"
+    echo "   brew install snyk/tap/snyk"
+    exit 1
+fi
+
+# Check if authenticated
+if ! snyk auth &> /dev/null; then
+    echo "🔑 Please authenticate with Snyk:"
+    echo "   snyk auth"
+    exit 1
+fi
+
+# Build the project first
+echo "🏗️ Building project..."
+mvn clean compile -DskipTests
+
+# Run Snyk test on Maven dependencies
+echo "🔍 Scanning Maven dependencies for vulnerabilities..."
+snyk test --severity-threshold=medium --project-name=inqwise-difference
+
+# Run Snyk monitor (optional - only for tracking)
+read -p "📊 Do you want to monitor this project on Snyk? (y/N): " -n 1 -r
+echo
+if [[ $REPLY =~ ^[Yy]$ ]]; then
+    echo "📊 Setting up Snyk monitoring..."
+    snyk monitor --project-name=inqwise-difference
+fi
+
+echo "✅ Local Snyk security checks completed!"
+echo "💡 Tip: Run 'snyk test --help' for more options"

@@ -1,0 +1,18 @@
+# Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
+version: v1.0.0
+
+# Language-specific settings
+language-settings:
+  java:
+    # Skip Maven test dependencies for security scanning
+    skipUnresolved: true
+
+# Ignore rules for specific vulnerabilities (example - remove if not needed)
+# ignore:
+#   'SNYK-JAVA-ORGAPACHELOGGING-1234567':
+#     - '*':
+#         reason: 'False positive - not used in production'
+#         expires: '2024-12-31T23:59:59.999Z'
+
+# Patches to apply to vulnerabilities
+patch: {}

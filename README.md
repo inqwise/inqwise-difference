@@ -1,11 +1,21 @@
 # Inqwise Difference - Library for Compare
 
-This library provides an efficient and flexible way to compute and represent differences between two Java objects. It allows users to define “silent fields” that should be ignored during the comparison process, and “composite fields” that require more complex handling. The core functionality revolves around creating and managing differences in a structured format using Jackson for JSON processing. The library also supports various operations like add, remove, replace, move, and more. Ideal for projects that require object comparison, change tracking, or patching.
+[![CI](https://github.com/inqwise/inqwise-difference/actions/workflows/ci.yml/badge.svg)](https://github.com/inqwise/inqwise-difference/actions/workflows/ci.yml)
+[![Release](https://github.com/inqwise/inqwise-difference/actions/workflows/release.yml/badge.svg)](https://github.com/inqwise/inqwise-difference/actions/workflows/release.yml)
+[![CodeQL](https://github.com/inqwise/inqwise-difference/actions/workflows/codeql.yml/badge.svg)](https://github.com/inqwise/inqwise-difference/actions/workflows/codeql.yml)
+[![Snyk Security](https://github.com/inqwise/inqwise-difference/actions/workflows/snyk.yml/badge.svg)](https://github.com/inqwise/inqwise-difference/actions/workflows/snyk.yml)
+[![Maven Central](https://img.shields.io/maven-central/v/com.inqwise.difference/inqwise-difference.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22com.inqwise.difference%22%20AND%20a:%22inqwise-difference%22)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Java Version](https://img.shields.io/badge/Java-21%2B-blue.svg)](https://openjdk.java.net/projects/jdk/21/)
+[![RFC 6902](https://img.shields.io/badge/RFC-6902-green.svg)](https://tools.ietf.org/html/rfc6902)
+
+This library provides an efficient and flexible way to compute and represent differences between two Java objects. It allows users to define "silent fields" that should be ignored during the comparison process, and "composite fields" that require more complex handling. The core functionality revolves around creating and managing differences in a structured format using Jackson for JSON processing. The library also supports various operations like add, remove, replace, move, and more. Ideal for projects that require object comparison, change tracking, or patching.
 
 ## Table of Contents
 
 - [Introduction](#introduction)
 - [Features](#features)
+- [Requirements](#requirements)
 - [Installation](#installation)
   - [Maven Dependency](#maven-dependency)
 - [Usage](#usage)
@@ -13,7 +23,10 @@ This library provides an efficient and flexible way to compute and represent dif
   - [Comparing Two Objects](#comparing-two-objects)
   - [Ignoring Fields During Comparison](#ignoring-fields-during-comparison)
   - [Handling Composite Fields](#handling-composite-fields)
+- [Security](#security)
 - [Contributing](#contributing)
+  - [Development Setup](#development-setup)
+  - [Continuous Integration](#continuous-integration)
 - [License](#license)
 
 ## Introduction
@@ -28,6 +41,12 @@ Inqwise Difference is a Java library designed to compare two Java objects and pr
 - **JSON Patch Operations**: Supports operations like add, remove, replace, move, copy, and test as per [RFC 6902](https://tools.ietf.org/html/rfc6902).
 - **Integration with Jackson**: Utilizes Jackson for JSON serialization and deserialization.
 - **Easy to Use API**: Simple and intuitive methods to perform comparisons and apply patches.
+
+## Requirements
+
+- **Java**: 21 or higher
+- **Maven**: 3.6.3 or higher
+- **Dependencies**: Jackson 2.17+, Apache Commons Collections 4.4+
 
 ## Installation
 
@@ -122,16 +141,57 @@ List<String> compositeFields = Arrays.asList("address.street", "address.city");
 Differences differences = Differences.between(obj1, obj2, silentFields, compositeFields);
 ```
 
+## Security
+
+This project takes security seriously and includes multiple layers of security scanning:
+
+- **CodeQL Analysis**: Static code analysis for security vulnerabilities
+- **Snyk Scanning**: Dependency vulnerability scanning and monitoring
+- **Automated Updates**: Dependabot keeps dependencies current with security patches
+
+### Reporting Security Issues
+
+If you discover a security vulnerability, please report it privately by:
+1. Using GitHub's [Security Advisory](https://github.com/inqwise/inqwise-difference/security/advisories/new) feature
+2. Or emailing security concerns to [alex@inqwise.com](mailto:alex@inqwise.com)
+
+Please do not report security vulnerabilities through public issues.
+
 ## Contributing
 
 Contributions are welcome! If you'd like to contribute to the project, please follow these steps:
 
 1. Fork the repository.
 2. Create a new branch for your feature or bug fix.
-3. Commit your changes with clear commit messages.
-4. Submit a pull request describing your changes.
+3. Make your changes and ensure all tests pass:
+   ```bash
+   mvn clean test
+   ```
+4. Commit your changes with clear commit messages.
+5. Submit a pull request describing your changes.
 
-Please ensure that your code adheres to the project's coding standards and includes appropriate tests.
+### Development Setup
+
+```bash
+# Clone the repository
+git clone https://github.com/inqwise/inqwise-difference.git
+cd inqwise-difference
+
+# Build and test
+mvn clean compile test
+
+# Generate Javadocs
+mvn javadoc:javadoc
+```
+
+### Continuous Integration
+
+This project uses GitHub Actions for CI/CD:
+- **CI Pipeline**: Automatically runs tests on JDK 21 and 22
+- **Code Quality**: Validates dependencies and project structure
+- **Release Pipeline**: Automated releases to Maven Central
+
+Please ensure that your code adheres to the project's coding standards and includes appropriate tests. All pull requests must pass the CI checks before merging.
 
 ## License
 
