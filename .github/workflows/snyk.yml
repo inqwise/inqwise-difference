@@ -14,20 +14,25 @@ jobs:
   snyk-info:
     name: Snyk Configuration Check
     runs-on: ubuntu-latest
-    if: ${{ secrets.SNYK_TOKEN == '' }}
     steps:
-    - name: Snyk Token Not Configured
+    - name: Check Snyk Token and provide info
+      env:
+        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
       run: |
-        echo "ℹ️ Snyk security scanning is not configured."
-        echo "To enable Snyk scanning, add SNYK_TOKEN to repository secrets."
-        echo "Visit https://snyk.io to get your token."
-        echo "This is optional - the build will continue without security scanning."
+        if [ -z "$SNYK_TOKEN" ]; then
+          echo "ℹ️ Snyk security scanning is not configured."
+          echo "To enable Snyk scanning, add SNYK_TOKEN to repository secrets."
+          echo "Visit https://snyk.io to get your token."
+          echo "This is optional - the build will continue without security scanning."
+        else
+          echo "✅ Snyk token is configured. Security scanning will run on appropriate triggers."
+        fi
   
   snyk:
     name: Snyk Security Scan
     runs-on: ubuntu-latest
     # Run on PR, releases, and monthly schedule (free tier optimized)
-    if: ${{ secrets.SNYK_TOKEN != '' && (github.event_name == 'pull_request' || startsWith(github.ref, 'refs/tags/') || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') }}
+    if: github.event_name == 'pull_request' || startsWith(github.ref, 'refs/tags/') || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
     
     steps:
     - name: Checkout code
@@ -61,7 +66,7 @@ jobs:
     name: Snyk Monitor
     runs-on: ubuntu-latest
     # Only monitor on tags/releases to conserve free tier usage
-    if: startsWith(github.ref, 'refs/tags/') && secrets.SNYK_TOKEN != ''
+    if: startsWith(github.ref, 'refs/tags/')
     
     steps:
     - name: Checkout code
@@ -89,7 +94,7 @@ jobs:
     name: Snyk Container Scan
     runs-on: ubuntu-latest
     # Only run on releases and manual dispatch to conserve free tier
-    if: (startsWith(github.ref, 'refs/tags/') || github.event_name == 'workflow_dispatch') && secrets.SNYK_TOKEN != ''
+    if: startsWith(github.ref, 'refs/tags/') || github.event_name == 'workflow_dispatch'
     
     steps:
     - name: Checkout code

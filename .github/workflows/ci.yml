@@ -111,6 +111,7 @@ jobs:
         echo "    - Monthly scheduled scans"
         echo "    - Manual dispatch available"
         echo "💡 This optimizes free tier usage while maintaining security coverage"
+        echo "⚙️ Configure SNYK_TOKEN in repository secrets to enable scanning"
 
   integration-test:
     name: Integration Tests
