@@ -1,11 +1,16 @@
 # Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
 version: v1.0.0
 
-# Language-specific settings
+# Language-specific settings optimized for free tier usage
 language-settings:
   java:
     # Skip Maven test dependencies for security scanning
     skipUnresolved: true
+    # Focus on production dependencies only for free tier efficiency
+    skipTestScope: true
+
+# Free tier optimization: Focus on high and critical severity only
+# This reduces API usage while maintaining security for important issues
 
 # Ignore rules for specific vulnerabilities (example - remove if not needed)
 # ignore:

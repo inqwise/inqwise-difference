@@ -104,18 +104,13 @@ jobs:
     - name: Validate Maven project
       run: mvn validate
       
-    - name: Run Snyk security scan
-      uses: snyk/actions/maven@master
-      continue-on-error: true
-      if: ${{ secrets.SNYK_TOKEN != '' }}
-      env:
-        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-      with:
-        args: --severity-threshold=medium
-        
-    - name: Snyk not configured notice
-      if: ${{ secrets.SNYK_TOKEN == '' }}
-      run: echo "ℹ️ Skipping Snyk scan - SNYK_TOKEN not configured"
+    - name: Security scan info
+      run: |
+        echo "🔒 Security scanning available via dedicated Snyk workflow"
+        echo "    - On pull requests and releases"
+        echo "    - Monthly scheduled scans"
+        echo "    - Manual dispatch available"
+        echo "💡 This optimizes free tier usage while maintaining security coverage"
 
   integration-test:
     name: Integration Tests

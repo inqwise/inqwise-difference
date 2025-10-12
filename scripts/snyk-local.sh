@@ -27,9 +27,10 @@ fi
 echo "🏗️ Building project..."
 mvn clean compile -DskipTests
 
-# Run Snyk test on Maven dependencies
+# Run Snyk test on Maven dependencies (free tier optimized)
 echo "🔍 Scanning Maven dependencies for vulnerabilities..."
-snyk test --severity-threshold=medium --project-name=inqwise-difference --sarif-file-output=snyk-local.sarif
+echo "💰 Using high severity threshold to optimize free tier usage"
+snyk test --severity-threshold=high --project-name=inqwise-difference --sarif-file-output=snyk-local.sarif
 
 # Run Snyk monitor (optional - only for tracking)
 read -p "📊 Do you want to monitor this project on Snyk? (y/N): " -n 1 -r

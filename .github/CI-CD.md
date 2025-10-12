@@ -28,16 +28,17 @@ This directory contains the GitHub Actions workflows and templates for the Inqwi
   - Code quality analysis
   - Automatic security alerts
 
-### Snyk Security Scanning (`snyk.yml`)
-- **Trigger**: Push/PR + weekly schedule + manual dispatch
+### Snyk Security Scanning (`snyk.yml`) - Free Tier Optimized
+- **Trigger**: PR + releases + monthly schedule + manual dispatch
 - **Jobs**:
   - **Snyk Scan**: Dependency vulnerability scanning with SARIF upload
-  - **Snyk Monitor**: Continuous monitoring for main/master branches
-  - **Container Scan**: Docker image vulnerability assessment
+  - **Snyk Monitor**: Project monitoring on tagged releases only
+  - **Container Scan**: Docker image scanning on releases only
 - **Features**:
   - High-severity vulnerability blocking
   - GitHub Security tab integration
-  - Continuous project monitoring
+  - Free tier optimized (8-12 scans/month)
+  - Smart scheduling to conserve API quota
 
 ## Automation
 
@@ -71,7 +72,9 @@ For the workflows to function properly, the following secrets must be configured
 - `GPG_PASSPHRASE`: Passphrase for the GPG key
 
 **Security Scanning:**
-- `SNYK_TOKEN`: Snyk authentication token (get from [snyk.io](https://snyk.io))
+- `SNYK_TOKEN`: Snyk authentication token (get free account from [snyk.io](https://snyk.io))
+  - **Free Tier**: 200 tests/month (sufficient for this project)
+  - **See**: [SNYK_FREE_TIER.md](SNYK_FREE_TIER.md) for optimization details
 
 ## Badge Status
 
