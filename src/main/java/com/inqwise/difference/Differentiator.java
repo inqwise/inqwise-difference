@@ -1,7 +1,6 @@
 package com.inqwise.difference;
 
 import java.util.List;
-import javax.annotation.Nonnull;
 
 /**
  * A class that facilitates comparison between two objects while allowing the user to specify 
@@ -97,7 +96,7 @@ public class Differentiator {
          * @param silentFields a list of fields to be ignored.
          * @return the current {@code Builder} instance for method chaining.
          */
-        public Builder withSilentFields(@Nonnull List<String> silentFields) {
+        public Builder withSilentFields(List<String> silentFields) {
             this.silentFields = silentFields;
             return this;
         }
@@ -107,7 +106,7 @@ public class Differentiator {
          * @param compositeFields a list of composite fields.
          * @return the current {@code Builder} instance for method chaining.
          */
-        public Builder withCompositeFields(@Nonnull List<String> compositeFields) {
+        public Builder withCompositeFields(List<String> compositeFields) {
             this.compositeFields = compositeFields;
             return this;
         }
