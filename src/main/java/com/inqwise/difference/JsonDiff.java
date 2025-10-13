@@ -488,13 +488,8 @@ public final class JsonDiff {
                 || ((sourceType == NodeType.ARRAY && targetType == NodeType.ARRAY)
                 && flags.contains(DiffFlags.OMIT_COMPOSITE_ARRAY));
 
-        if (isCompositeObject) effectiveCompositeObjects.add(path);
-
         if (!source.equals(JsonNodeComparator.getInstance(), target)) {
             if (sourceType == NodeType.ARRAY && targetType == NodeType.ARRAY) {
-                if (flags.contains(DiffFlags.OMIT_COMPOSITE_ARRAY)) {
-                    effectiveCompositeObjects.add(path);
-                }
                 compareArray(path, source, target, diffs, isCompositeObject);
             } else if (sourceType == NodeType.OBJECT && targetType == NodeType.OBJECT) {
                 compareObjects(path, source, target, diffs, isCompositeObject);
