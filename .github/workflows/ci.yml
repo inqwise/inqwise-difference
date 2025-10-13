@@ -33,7 +33,7 @@ jobs:
       run: mvn clean test
       
     - name: Generate test report
-      uses: dorny/test-reporter@v1
+      uses: dorny/test-reporter@v2
       if: success() || failure()
       with:
         name: JDK ${{ matrix.java }} Tests
