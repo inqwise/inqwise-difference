@@ -24,8 +24,7 @@ public final class JsonDiff {
     /** The set of JSON Pointers representing composite objects in the JSON structure. */
     private final Set<JsonPointer> compositeObjects;
 
-    /** The set of effective composite objects encountered during comparison. */
-    private final Set<JsonPointer> effectiveCompositeObjects;
+
 
     /**
      * Private constructor to initialize the {@code JsonDiff} instance with specific flags
@@ -37,7 +36,7 @@ public final class JsonDiff {
     private JsonDiff(EnumSet<DiffFlags> flags, Collection<JsonPointer> compositeObjects) {
         this.flags = flags.clone();
         this.compositeObjects = Set.copyOf(compositeObjects);
-        this.effectiveCompositeObjects = new HashSet<>();
+        
     }
 
     /**
