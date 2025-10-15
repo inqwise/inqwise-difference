@@ -66,12 +66,18 @@ jobs:
         MAVEN_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
         MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
         
-    - name: Create GitHub Release Assets
+    - name: Build Release Assets
       run: |
+        # Rebuild artifacts after Maven release (which runs clean)
+        mvn clean package -P sonatype-oss-release -DskipTests
         mkdir -p release-assets
         cp target/inqwise-difference-*.jar release-assets/
         cp target/inqwise-difference-*-sources.jar release-assets/
         cp target/inqwise-difference-*-javadoc.jar release-assets/
+      env:
+        MAVEN_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+        MAVEN_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
+        MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
         
     - name: Create GitHub Release (Manual Trigger)
       if: github.event_name == 'workflow_dispatch'
