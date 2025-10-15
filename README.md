@@ -58,9 +58,11 @@ To include the Inqwise Difference library in your Maven project, add the followi
 <dependency>
     <groupId>com.inqwise.difference</groupId>
     <artifactId>inqwise-difference</artifactId>
-    <version>1.1.4</version>
+    <version>${latest.version}</version>
 </dependency>
 ```
+
+> **🔗 Latest Version:** Check the [Releases page](https://github.com/inqwise/inqwise-difference/releases/latest) or use the version shown in the Maven Central badge above.
 
 Make sure to update your project's repositories if necessary, depending on where the library is hosted. If the library is available on [Maven Central](https://search.maven.org/), no additional repository configuration is needed.
 
