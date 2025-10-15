@@ -37,16 +37,25 @@ jobs:
         git config --global user.email "action@github.com"
         git config --global user.name "GitHub Action"
         
-    - name: Update version for manual release
+    - name: Build and test
+      run: mvn clean test
+      
+    - name: Maven Release (Manual Trigger)
       if: github.event_name == 'workflow_dispatch'
       run: |
-        mvn versions:set -DnewVersion=${{ github.event.inputs.version }}
-        mvn versions:commit
-        
-    - name: Build and test
-      run: mvn clean verify
-      
-    - name: Deploy to Maven Central
+        NEXT_VERSION=$(echo ${{ github.event.inputs.version }} | awk -F. '{$NF = $NF + 1; print}' OFS=.)
+        mvn release:clean release:prepare release:perform \
+          -DreleaseVersion=${{ github.event.inputs.version }} \
+          -DdevelopmentVersion=${NEXT_VERSION}-SNAPSHOT \
+          -Dtag=v${{ github.event.inputs.version }} \
+          -DskipTests
+      env:
+        MAVEN_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+        MAVEN_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
+        MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+          
+    - name: Deploy to Maven Central (Tag-based Release)
+      if: github.event_name == 'release'
       run: mvn clean deploy -P sonatype-oss-release -DskipTests
       env:
         MAVEN_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
@@ -60,13 +69,52 @@ jobs:
         cp target/inqwise-difference-*-sources.jar release-assets/
         cp target/inqwise-difference-*-javadoc.jar release-assets/
         
-    - name: Upload Release Assets
-      if: github.event_name == 'release'
-      uses: actions/upload-release-asset@v1
+    - name: Create GitHub Release (Manual Trigger)
+      if: github.event_name == 'workflow_dispatch'
+      uses: softprops/action-gh-release@v2
+      with:
+        tag_name: v${{ github.event.inputs.version }}
+        name: Release v${{ github.event.inputs.version }}
+        body: |
+          🚀 **Release v${{ github.event.inputs.version }}**
+          
+          ## 📦 Maven Central
+          ```xml
+          <dependency>
+              <groupId>com.inqwise.difference</groupId>
+              <artifactId>inqwise-difference</artifactId>
+              <version>${{ github.event.inputs.version }}</version>
+          </dependency>
+          ```
+          
+          ## 📋 Release Assets
+          - Main library JAR
+          - Sources JAR
+          - Javadoc JAR
+          - All artifacts GPG signed
+          
+          ## 🔗 Links
+          - [Maven Central](https://central.sonatype.com/artifact/com.inqwise.difference/inqwise-difference/${{ github.event.inputs.version }})
+          - [Documentation](https://github.com/inqwise/inqwise-difference#readme)
+          
+          ---
+          *Released automatically via GitHub Actions*
+        files: |
+          release-assets/inqwise-difference-*.jar
+          release-assets/inqwise-difference-*-sources.jar
+          release-assets/inqwise-difference-*-javadoc.jar
+        draft: false
+        prerelease: false
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        
+    - name: Upload Release Assets (Existing Release)
+      if: github.event_name == 'release'
+      uses: softprops/action-gh-release@v2
       with:
-        upload_url: ${{ github.event.release.upload_url }}
-        asset_path: ./release-assets/
-        asset_name: maven-artifacts
-        asset_content_type: application/zip
+        files: |
+          release-assets/inqwise-difference-*.jar
+          release-assets/inqwise-difference-*-sources.jar
+          release-assets/inqwise-difference-*-javadoc.jar
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
