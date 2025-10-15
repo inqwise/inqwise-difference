@@ -19,6 +19,9 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v5
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        fetch-depth: 0
       
     - name: Set up JDK 21
       uses: actions/setup-java@v5
@@ -36,6 +39,7 @@ jobs:
       run: |
         git config --global user.email "action@github.com"
         git config --global user.name "GitHub Action"
+        git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
         
     - name: Build and test
       run: mvn clean test
