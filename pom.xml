@@ -12,7 +12,7 @@
 		<name>inqwise</name>
 	</organization>
 	
-	<url>https://github.com/inqwise</url>
+	<url>https://github.com/inqwise/inqwise-difference</url>
 	
 	<developers>
 		<developer>
@@ -295,6 +295,7 @@
 					<goals>deploy</goals>
 					<tagNameFormat>v@{project.version}</tagNameFormat>
 					<preparationGoals>clean compile</preparationGoals>
+					<arguments>-DskipTests</arguments>
 				</configuration>
 			</plugin>
 		</plugins>
@@ -355,6 +356,9 @@
                         <extensions>true</extensions>
                         <configuration>
                             <publishingServerId>sonatype-oss-release</publishingServerId>
+                            <autoPublish>true</autoPublish>
+                            <waitUntil>published</waitUntil>
+                            <checksums>required</checksums>
                         </configuration>
                     </plugin>
 
