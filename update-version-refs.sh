@@ -2,6 +2,7 @@
 
 # Update Version References Script
 # This script updates hardcoded version references with the latest git tag
+# Used both manually and automatically by the GitHub Actions release workflow
 
 set -e
 
