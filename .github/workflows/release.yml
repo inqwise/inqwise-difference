@@ -66,14 +66,32 @@ jobs:
         MAVEN_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
         MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
         
-    - name: Build Release Assets
+    - name: Prepare Release Assets
       run: |
-        # Rebuild artifacts after Maven release (which runs clean)
-        mvn clean package -P sonatype-oss-release -DskipTests
+        # The Maven release process already built the correct artifacts
+        # We need to find them in the Maven local repository after release:perform
+        VERSION="${{ github.event.inputs.version }}"
+        MAVEN_REPO="$HOME/.m2/repository/com/inqwise/difference/inqwise-difference/$VERSION"
+        
         mkdir -p release-assets
-        cp target/inqwise-difference-*.jar release-assets/
-        cp target/inqwise-difference-*-sources.jar release-assets/
-        cp target/inqwise-difference-*-javadoc.jar release-assets/
+        
+        # Copy the release artifacts from Maven local repository
+        if [ -d "$MAVEN_REPO" ]; then
+          cp "$MAVEN_REPO/inqwise-difference-$VERSION.jar" release-assets/ || echo "Main JAR not found"
+          cp "$MAVEN_REPO/inqwise-difference-$VERSION-sources.jar" release-assets/ || echo "Sources JAR not found"
+          cp "$MAVEN_REPO/inqwise-difference-$VERSION-javadoc.jar" release-assets/ || echo "Javadoc JAR not found"
+        else
+          echo "Maven repository directory not found: $MAVEN_REPO"
+          echo "Falling back to building artifacts with correct version"
+          # Checkout the release tag to build the correct version
+          git checkout "v$VERSION"
+          mvn clean package -P sonatype-oss-release -DskipTests
+          cp target/inqwise-difference-*.jar release-assets/
+        fi
+        
+        # List what we actually have
+        echo "Release assets prepared:"
+        ls -la release-assets/
       env:
         MAVEN_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
         MAVEN_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
@@ -134,10 +152,7 @@ jobs:
           
           ---
           *Released automatically via GitHub Actions*
-        files: |
-          release-assets/inqwise-difference-*.jar
-          release-assets/inqwise-difference-*-sources.jar
-          release-assets/inqwise-difference-*-javadoc.jar
+        files: release-assets/*
         draft: false
         prerelease: false
       env:
@@ -176,9 +191,6 @@ jobs:
       if: github.event_name == 'release'
       uses: softprops/action-gh-release@v2
       with:
-        files: |
-          release-assets/inqwise-difference-*.jar
-          release-assets/inqwise-difference-*-sources.jar
-          release-assets/inqwise-difference-*-javadoc.jar
+        files: release-assets/*
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
