@@ -30,7 +30,7 @@ Differences.between(obj1, obj2, silentFields);
 ```
 
 ## Environment
-- **Library Version**: [e.g. 1.1.3]
+- **Library Version**: [e.g. 1.1.4]
 - **Java Version**: [e.g. 21]
 - **Operating System**: [e.g. Windows 10, macOS 12.0, Ubuntu 20.04]
 - **Framework**: [e.g. Spring Boot 3.1, Quarkus 2.16]

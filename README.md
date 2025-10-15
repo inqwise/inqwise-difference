@@ -58,7 +58,7 @@ To include the Inqwise Difference library in your Maven project, add the followi
 <dependency>
     <groupId>com.inqwise.difference</groupId>
     <artifactId>inqwise-difference</artifactId>
-    <version>1.1.3</version>
+    <version>1.1.4</version>
 </dependency>
 ```
 
