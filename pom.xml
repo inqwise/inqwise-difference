@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	
 	<groupId>com.inqwise.difference</groupId>
 	<artifactId>inqwise-difference</artifactId>
-	<version>1.1.0-SNAPSHOT</version>
+	<version>1.1.0</version>
 	<description>This library provides an efficient and flexible way to compute and represent differences between two Java objects. It allows users to define “silent fields” that should be ignored during the comparison process, and “composite fields” that require more complex handling. The core functionality revolves around creating and managing differences in a structured format using Jackson for JSON processing. The library also supports various operations like add, remove, replace, move, and more. Ideal for projects that require object comparison, change tracking, or patching.</description>
 	<name>Inqwise Difference - Library for compare</name>
 	
@@ -38,7 +36,8 @@
 		<connection>scm:git:git@github.com:inqwise/inqwise-difference.git</connection>
 		<developerConnection>scm:git:git@github.com:inqwise/inqwise-difference.git</developerConnection>
 		<url>git@github.com:inqwise/inqwise-difference.git</url>
-	</scm>
+	  <tag>v1.1.0</tag>
+  </scm>
 	
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -208,7 +207,7 @@
 						</goals>
 						<configuration>
 							<rules>
-								<banDuplicatePomDependencyVersions/>
+								<banDuplicatePomDependencyVersions />
 								<bannedPlugins>
 									<!-- will only display a warning but does not fail the build. -->
 									<level>WARN</level>
