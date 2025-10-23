@@ -1,6 +1,7 @@
 # Inqwise Difference - Library for Compare
 
 [![CI](https://github.com/inqwise/inqwise-difference/actions/workflows/ci.yml/badge.svg)](https://github.com/inqwise/inqwise-difference/actions/workflows/ci.yml)
+[![Codecov](https://codecov.io/gh/inqwise/inqwise-difference/branch/master/graph/badge.svg)](https://codecov.io/gh/inqwise/inqwise-difference)
 [![Release](https://github.com/inqwise/inqwise-difference/actions/workflows/release.yml/badge.svg)](https://github.com/inqwise/inqwise-difference/actions/workflows/release.yml)
 [![CodeQL](https://github.com/inqwise/inqwise-difference/actions/workflows/codeql.yml/badge.svg)](https://github.com/inqwise/inqwise-difference/actions/workflows/codeql.yml)
 [![Snyk Security](https://github.com/inqwise/inqwise-difference/actions/workflows/snyk.yml/badge.svg)](https://github.com/inqwise/inqwise-difference/actions/workflows/snyk.yml)
