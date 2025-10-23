@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- Repository contributor guide (`AGENTS.md`) with coding, testing, and release expectations.
+- Codecov coverage badge in the README and automated upload via CI workflow.
+
+### Fixed
+- Aligned JUnit Platform launcher with JUnit Jupiter 6 to restore CI test discovery.
+
 ## [1.1.0] - Work in Progress
 
 ### Added
