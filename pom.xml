@@ -52,7 +52,7 @@
 		<guava.version>33.0.0-jre</guava.version>
 		<jackson.version>2.20.0</jackson.version>
 		<log4j2.version>2.25.2</log4j2.version>
-		<vertx.version>5.0.4</vertx.version>
+		<vertx.version>5.0.5</vertx.version>
 		<jacoco.version>0.8.11</jacoco.version>
     </properties>
 	
