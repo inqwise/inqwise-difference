@@ -43,15 +43,26 @@ jobs:
         
     - name: Build and test
       run: mvn clean test
+
+    - name: Resolve release metadata
+      id: release_meta
+      run: |
+        if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+          VERSION="${{ github.event.inputs.version }}"
+        else
+          VERSION="${GITHUB_REF_NAME#v}"
+        fi
+        NEXT_VERSION=$(echo "$VERSION" | awk -F. '{$NF = $NF + 1; print}' OFS=.)
+        echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+        echo "next_version=${NEXT_VERSION}-SNAPSHOT" >> "$GITHUB_OUTPUT"
       
     - name: Maven Release (Manual Trigger)
       if: github.event_name == 'workflow_dispatch'
       run: |
-        NEXT_VERSION=$(echo ${{ github.event.inputs.version }} | awk -F. '{$NF = $NF + 1; print}' OFS=.)
         mvn release:clean release:prepare release:perform \
-          -DreleaseVersion=${{ github.event.inputs.version }} \
-          -DdevelopmentVersion=${NEXT_VERSION}-SNAPSHOT \
-          -Dtag=v${{ github.event.inputs.version }} \
+          -DreleaseVersion=${{ steps.release_meta.outputs.version }} \
+          -DdevelopmentVersion=${{ steps.release_meta.outputs.next_version }} \
+          -Dtag=v${{ steps.release_meta.outputs.version }} \
           -DskipTests
       env:
         MAVEN_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
@@ -70,7 +81,7 @@ jobs:
       run: |
         # The Maven release process already built the correct artifacts
         # We need to find them in the Maven local repository after release:perform
-        VERSION="${{ github.event.inputs.version }}"
+        VERSION="${{ steps.release_meta.outputs.version }}"
         MAVEN_REPO="$HOME/.m2/repository/com/inqwise/difference/inqwise-difference/$VERSION"
         
         mkdir -p release-assets
@@ -101,17 +112,17 @@ jobs:
       if: github.event_name == 'workflow_dispatch'
       uses: softprops/action-gh-release@v3
       with:
-        tag_name: v${{ github.event.inputs.version }}
-        name: Release v${{ github.event.inputs.version }}
+        tag_name: v${{ steps.release_meta.outputs.version }}
+        name: Release v${{ steps.release_meta.outputs.version }}
         body: |
-          🚀 **Release v${{ github.event.inputs.version }}**
+          🚀 **Release v${{ steps.release_meta.outputs.version }}**
           
           ## 📦 Maven Central
           ```xml
           <dependency>
               <groupId>com.inqwise.difference</groupId>
               <artifactId>inqwise-difference</artifactId>
-              <version>${{ github.event.inputs.version }}</version>
+              <version>${{ steps.release_meta.outputs.version }}</version>
           </dependency>
           ```
           
@@ -122,7 +133,7 @@ jobs:
           - All artifacts GPG signed
           
           ## 🔗 Links
-          - [Maven Central](https://central.sonatype.com/artifact/com.inqwise.difference/inqwise-difference/${{ github.event.inputs.version }})
+          - [Maven Central](https://central.sonatype.com/artifact/com.inqwise.difference/inqwise-difference/${{ steps.release_meta.outputs.version }})
           - [Documentation](https://github.com/inqwise/inqwise-difference#readme)
           
           ---
